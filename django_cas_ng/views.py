@@ -13,6 +13,7 @@ from django.contrib.auth import (
     authenticate,
 )
 from django.contrib import messages
+from django.utils.translation import ugettext as _
 
 __all__ = ['login', 'logout']
 
@@ -93,7 +94,7 @@ def login(request, next_page=None, required=False):
     if not next_page:
         next_page = _redirect_url(request)
     if request.user.is_authenticated():
-        message = "You are logged in as %s." % request.user.get_username()
+        message = _("You are logged in as %s.") % request.user.get_username()
         messages.success(request, message)
         return HttpResponseRedirect(next_page)
     ticket = request.GET.get('ticket')
@@ -103,13 +104,13 @@ def login(request, next_page=None, required=False):
         if user is not None:
             auth_login(request, user)
             name = user.get_username()
-            message = "Login succeeded. Welcome, %s." % name
+            message = _("Login succeeded. Welcome, %s.") % name
             messages.success(request, message)
             return HttpResponseRedirect(next_page)
         elif settings.CAS_RETRY_LOGIN or required:
             return HttpResponseRedirect(_login_url(service))
         else:
-            error = "<h1>Forbidden</h1><p>Login failed.</p>"
+            error = _("<h1>Forbidden</h1><p>Login failed.</p>")
             return HttpResponseForbidden(error)
     else:
         return HttpResponseRedirect(_login_url(service))
