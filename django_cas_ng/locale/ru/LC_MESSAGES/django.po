@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: django-cas-ng\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-05-28 19:35+0300\n"
+"POT-Creation-Date: 2015-05-29 10:03+0300\n"
 "PO-Revision-Date: 2015-05-28 19:47+0300\n"
 "Last-Translator: Vladimir Zakharov <zakharov.vv@gmail.com>\n"
 "Language-Team: \n"
@@ -21,16 +21,13 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: views.py:98
 #, python-format
 msgid "You are logged in as %s."
 msgstr "Вы вошли как %s."
 
-#: views.py:108
 #, python-format
 msgid "Login succeeded. Welcome, %s."
 msgstr "Вы успешно вошли. Добро пожаловать, %s."
 
-#: views.py:114
 msgid "<h1>Forbidden</h1><p>Login failed.</p>"
 msgstr "<h1>Нет доступа</h1><p>Вход не удался.</p>"
