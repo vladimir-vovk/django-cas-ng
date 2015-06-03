@@ -32,5 +32,6 @@ setup(
     download_url ='https://github.com/mingchen/django-cas-ng/releases',
     version='3.4.2-jw03',
     install_requires=['Django >= 1.5'],
+    include_package_data = True
 )
 
