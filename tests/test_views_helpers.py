@@ -1,3 +1,5 @@
+# coding: utf-8
+from __future__ import absolute_import
 from django.test import RequestFactory
 
 from django_cas_ng.views import (
@@ -63,6 +65,15 @@ def test_redirect_url_with_url_as_get_parameter():
 
     assert actual == expected
 
+    # with unicode symbols
+    request = factory.get(
+        '/login/', data={'next': '/directory/succession/search?last_name=Ф'})
+
+    actual = _redirect_url(request)
+    expected = '/directory/succession/search?last_name=Ф'.decode("utf8")
+
+    assert actual == expected
+
 
 def test_redirect_url_falls_back_to_cas_redirect_url_setting(settings):
     settings.CAS_IGNORE_REFERER = True
@@ -73,6 +84,17 @@ def test_redirect_url_falls_back_to_cas_redirect_url_setting(settings):
 
     actual = _redirect_url(request)
     expected = '/landing-page/'
+
+    assert actual == expected
+
+    # with unicode symbols
+    settings.CAS_REDIRECT_URL = '/landing-page/Иванов-Иван'
+
+    factory = RequestFactory()
+    request = factory.get('/login/')
+
+    actual = _redirect_url(request)
+    expected = '/landing-page/Иванов-Иван'.decode("utf8")
 
     assert actual == expected
 
@@ -89,6 +111,17 @@ def test_params_redirect_url_preceeds_settings_redirect_url(settings):
 
     assert actual == expected
 
+    # with unicode symbols
+    settings.CAS_REDIRECT_URL = '/landing-page/Иванов-Иван'
+
+    factory = RequestFactory()
+    request = factory.get('/login/', data={'next': '/override/Иванов-Иван'})
+
+    actual = _redirect_url(request)
+    expected = '/override/Иванов-Иван'.decode("utf8")
+
+    assert actual == expected
+
 
 def test_redirect_url_falls_back_to_http_referrer(settings):
     settings.CAS_IGNORE_REFERER = False
@@ -99,6 +132,17 @@ def test_redirect_url_falls_back_to_http_referrer(settings):
 
     actual = _redirect_url(request)
     expected = '/landing-page/'
+
+    assert actual == expected
+
+    # with unicode symbols
+    settings.CAS_REDIRECT_URL = '/wrong-landing-page/Иванов-Иван'
+
+    factory = RequestFactory()
+    request = factory.get('/login/', HTTP_REFERER='/landing-page/Иванов-Иван')
+
+    actual = _redirect_url(request)
+    expected = '/landing-page/Иванов-Иван'.decode("utf8")
 
     assert actual == expected
 

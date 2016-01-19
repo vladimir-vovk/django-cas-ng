@@ -31,7 +31,7 @@ def _service_url(request, redirect_to=None):
     protocol = get_protocol(request)
     host = request.get_host()
     service = urllib_parse.urlunparse(
-        (protocol, host, request.path, '', '', ''),
+        (protocol, host, request.get_full_path(), '', '', ''),
     )
     if redirect_to:
         if '?' in service:
@@ -56,6 +56,10 @@ def _redirect_url(request):
         prefix = urllib_parse.urlunparse(
             (get_protocol(request), request.get_host(), '', '', '', ''),
         )
+        # here prefix is unicode string, but next_ is not
+        if isinstance(next_, str):
+            # convert to unicode or we'll get "ascii codec can't decode" error
+            next_ = next_.decode("utf8")
         if next_.startswith(prefix):
             next_ = next_[len(prefix):]
     return next_
