@@ -33,12 +33,16 @@ def _service_url(request, redirect_to=None):
     service = urllib_parse.urlunparse(
         (protocol, host, request.get_full_path(), '', '', ''),
     )
+
+    # check if redirect param already in url
+    redirect_enc = urllib_parse.urlencode({REDIRECT_FIELD_NAME: redirect_to})
     if redirect_to:
-        if '?' in service:
-            service += '&'
-        else:
-            service += '?'
-        service += urllib_parse.urlencode({REDIRECT_FIELD_NAME: redirect_to})
+        if not ('?' in service and redirect_enc in service):
+            if '?' in service:
+                service += '&'
+            else:
+                service += '?'
+            service += redirect_enc
     return service
 
 
